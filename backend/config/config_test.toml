@@ -1,0 +1,16 @@
+[server]
+address = "127.0.0.1"
+port = 8080
+
+[logging]
+format = "json"
+level = "INFO"
+
+[metadata]
+owner = "alde"
+
+[GoogleKMS]
+project = 'a-gcp-project'
+location = 'global'
+keyring = 'horus-keyring'
+keyname = 'horus-key'
