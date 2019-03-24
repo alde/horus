@@ -23,15 +23,20 @@ type kmsEncryptor interface {
 }
 
 // NewGoogleCloudKMS sets up a new CloudKMS instance
-func NewGoogleCloudKMS(ctx context.Context, cfg *config.Config) (Encryptor, error) {
-	client, err := cloudkms.NewKeyManagementClient(ctx)
-	if err != nil {
-		return nil, err
+// If kmsClient is nil one will be created
+func NewGoogleCloudKMS(ctx context.Context, cfg *config.Config, kmsClient kmsEncryptor) (Encryptor, error) {
+	if kmsClient == nil {
+		var err error
+		kmsClient, err = cloudkms.NewKeyManagementClient(ctx)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	return &CloudKMS{
 		ctx:    ctx,
 		config: cfg,
-		client: client,
+		client: kmsClient,
 	}, nil
 }
 

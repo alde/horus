@@ -32,7 +32,7 @@ func main() {
 	if err != nil {
 		logrus.WithError(err).Fatal("unable to create database")
 	}
-	enc, err := encryptor.NewGoogleCloudKMS(ctx, cfg)
+	enc, err := encryptor.NewGoogleCloudKMS(ctx, cfg, nil)
 	if err != nil {
 		logrus.WithError(err).Fatal("unable to create encryptor")
 	}

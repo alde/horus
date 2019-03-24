@@ -12,7 +12,7 @@ import (
 
 func Test_Create(t *testing.T) {
 	a := assert.New(t)
-	kms, err := NewGoogleCloudKMS(context.Background(), &config.Config{})
+	kms, err := NewGoogleCloudKMS(context.Background(), &config.Config{}, nil)
 	a.Nil(err)
 	a.NotNil(kms)
 }
