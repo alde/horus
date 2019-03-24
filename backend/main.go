@@ -32,6 +32,10 @@ func main() {
 	if err != nil {
 		logrus.WithError(err).Fatal("unable to create database")
 	}
+	enc, err := encryptor.NewGoogleCloudKMS(ctx, cfg)
+	if err != nil {
+		logrus.WithError(err).Fatal("unable to create encryptor")
+	}
 
 	bind := fmt.Sprintf("%s:%d", cfg.Server.Address, cfg.Server.Port)
 	logrus.WithFields(logrus.Fields{
@@ -39,7 +43,7 @@ func main() {
 		"address": cfg.Server.Address,
 		"port":    cfg.Server.Port,
 	}).Info("launching Horus backend")
-	router := server.NewRouter(cfg, db, encryptor.NewGoogleCloudKMS(ctx, cfg))
+	router := server.NewRouter(cfg, db, enc)
 	if err := manners.ListenAndServe(bind, router); err != nil {
 		logrus.WithError(err).Fatal("unrecoverable error")
 	}

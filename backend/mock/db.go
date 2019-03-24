@@ -1,29 +1,63 @@
 package mock
 
+import "errors"
+
 // DB holds a mocked in-memory database
 type DB struct {
-	Memory map[string]string
+	Memory map[string]map[string]string
 }
 
-// Put inserts data into the database
-func (db *DB) Put(secretId string) error {
-	db.Memory[secretId] = secretId
+// Get mock
+func (d DB) Get(repository, key string) (string, error) {
+	if r, ok := d.Memory[repository]; ok {
+		if s, ok := r[key]; ok {
+			return s, nil
+		}
+	}
+
+	return "", errors.New("no such secret")
+}
+
+// Put mock
+func (d DB) Put(repository, key string, secret []byte) error {
+	if d.Memory[repository] == nil {
+		d.Memory[repository] = make(map[string]string)
+	}
+	d.Memory[repository][key] = string(secret)
 	return nil
 }
 
-// Get retrieves data from the database
-func (db *DB) Get(secretId string) (string, error) {
-	return db.Memory[secretId], nil
-}
+// Remove mock
+func (d DB) Remove(repository, key string) error {
+	var r map[string]string
+	var ok bool
+	if r, ok = d.Memory[repository]; !ok {
+		return nil
+	}
+	delete(r, key)
 
-// Has checks the existance in the database
-func (db *DB) Has(secretId string) (bool, error) {
-	_, ok := db.Memory[secretId]
-	return ok, nil
-}
-
-// Remove deletes an entry from the database
-func (db *DB) Remove(secretId string) error {
-	delete(db.Memory, secretId)
 	return nil
+}
+
+// Has mock
+func (d DB) Has(repository string, key string) bool {
+	if r, ok := d.Memory[repository]; ok {
+		if _, ok := r[key]; ok {
+			return true
+		}
+	}
+	return false
+}
+
+// List mock
+func (d DB) List(repository string) []string {
+	secrets := []string{}
+
+	if r, ok := d.Memory[repository]; ok {
+		for k := range r {
+			secrets = append(secrets, k)
+		}
+	}
+
+	return secrets
 }
