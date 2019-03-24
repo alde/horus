@@ -26,6 +26,14 @@ type Config struct {
 		Location string
 	}
 	Metadata map[string]string
+
+	MySQL struct {
+		Username     string
+		PasswordFile string
+		Host         string
+		Port         int
+		Database     string
+	}
 }
 
 // Initialize a new Config

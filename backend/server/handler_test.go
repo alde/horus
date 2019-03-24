@@ -43,3 +43,16 @@ func Test_ServiceMetadata(t *testing.T) {
 		assert.True(t, ok, "expected key %s", k)
 	}
 }
+
+func TestHandler_Fetch(t *testing.T) {
+	t.Skip("not implemented")
+	m := mux.NewRouter()
+	h := NewHandler(cfg0, mock.DB{}, enc)
+	m.HandleFunc("/api/v1/secret", h.Fetch())
+	wr := httptest.NewRecorder()
+
+	r, _ := http.NewRequest("GET", "/api/v1/secret?repo=github.com%2Falde%2Fhorus&key=SECRET", nil)
+	m.ServeHTTP(wr, r)
+
+	assert.Equal(t, http.StatusOK, wr.Code)
+}
