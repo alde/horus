@@ -18,7 +18,7 @@ Submission of keys should always be done over TLS.
 
 ## Configuration
 
-See the [config-test.toml](backend/config/config-test.toml) file for available configuration settings.
+See the [config_test.toml](backend/config/config_test.toml) file for available configuration settings.
 
 ## Backend
 Backend is written in Go, and is very simple.
