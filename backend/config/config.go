@@ -9,6 +9,15 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// MySQLConf holds the config values for MySQL
+type MySQLConf struct {
+	Username     string
+	PasswordFile string
+	Host         string
+	Port         int
+	Database     string
+}
+
 // Config struct holds the current configuration
 type Config struct {
 	Server struct {
@@ -27,13 +36,7 @@ type Config struct {
 	}
 	Metadata map[string]string
 
-	MySQL struct {
-		Username     string
-		PasswordFile string
-		Host         string
-		Port         int
-		Database     string
-	}
+	MySQL MySQLConf
 }
 
 // Initialize a new Config

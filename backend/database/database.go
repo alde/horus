@@ -21,6 +21,14 @@ type Database interface {
 
 // Init is used to initialize the database settings
 func Init(ctx context.Context, cfg *config.Config) (Database, error) {
+	if cfg.MySQL != (config.MySQLConf{}) {
+		logrus.Info("initializing MySQL backend")
+		database, err := NewMySQL(cfg)
+		if err != nil {
+			logrus.WithError(err).Error("unable to initialize MySQL backend")
+		}
+		return database, err
+	}
 	logrus.Info("setting up filesystem pretend database")
 	folder, _ := osext.ExecutableFolder()
 	database, err := NewFilestore(folder)
