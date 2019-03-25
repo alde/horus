@@ -14,3 +14,10 @@ project = 'a-gcp-project'
 location = 'global'
 keyring = 'horus-keyring'
 keyname = 'horus-key'
+
+[MySQL]
+username = 'horus_user'
+passwordfile = '/etc/credentials/database_password' # Password will be read from this file. Should not put passwords in the config
+host = '127.0.0.1'
+port = 3306
+database = 'horus_database'

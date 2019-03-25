@@ -37,6 +37,12 @@ func Test_ReadConfigFile(t *testing.T) {
 	a.Equal("horus-key", c.GoogleKMS.KeyName)
 
 	a.Equal("alde", c.Metadata["owner"])
+
+	a.Equal("127.0.0.1", c.MySQL.Host)
+	a.Equal(3306, c.MySQL.Port)
+	a.Equal("horus_user", c.MySQL.Username)
+	a.Equal("/etc/credentials/database_password", c.MySQL.PasswordFile)
+	a.Equal("horus_database", c.MySQL.Database)
 }
 
 func Test_ReadConfigFile_Error(t *testing.T) {
