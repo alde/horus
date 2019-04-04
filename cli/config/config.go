@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/BurntSushi/toml"
 )
@@ -58,5 +59,26 @@ func ReadConfigFile(cfg *Config, path string) {
 
 	if _, err := toml.DecodeFile(path, cfg); err != nil {
 		log.Fatal("unable to read config")
+	}
+}
+
+// WriteFile is used to write the current config to file
+func (c *Config) WriteFile(path string) {
+	if "" == path {
+		path, _ = os.UserHomeDir()
+		path = fmt.Sprintf("%s/.config/horus/cli_config.toml", path)
+	}
+	dir, _ := filepath.Split(path)
+	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+		log.Fatalf("unable to create directory\n%+v", err)
+	}
+	f, err := os.Create(path)
+	if err != nil {
+		log.Fatalf("unable to create file %s\n%+v", path, err)
+	}
+	defer f.Close()
+	e := toml.NewEncoder(f)
+	if err = e.Encode(c); err != nil {
+		log.Fatalf("unable to write configuration\n%+v", err)
 	}
 }
