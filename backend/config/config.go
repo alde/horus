@@ -16,6 +16,7 @@ type MySQLConf struct {
 	Host         string
 	Port         int
 	Database     string
+	DisableSSL   bool
 }
 
 // Config struct holds the current configuration

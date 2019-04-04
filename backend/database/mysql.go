@@ -34,8 +34,12 @@ func readPasswordFile(filename string) string {
 func NewMySQL(cfg *config.Config) (Database, error) {
 	password := readPasswordFile(cfg.MySQL.PasswordFile)
 
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?tls=skip-verify",
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
 		cfg.MySQL.Username, password, cfg.MySQL.Host, cfg.MySQL.Port, cfg.MySQL.Database)
+
+	if cfg.MySQL.DisableSSL {
+		connectionString += "?tls=skip-verify"
+	}
 
 	db, err := sql.Open("mysql", connectionString)
 	if err != nil {
@@ -72,8 +76,6 @@ func (m MySQL) Put(repository, key string, secret []byte) error {
 	_, err := m.db.Exec(
 		query,
 		repository, key, b64, b64)
-
-	_, _ = m.db.Exec("SET GLOBAL query_cache_size = 0")
 
 	if err != nil {
 		logrus.WithFields(logrus.Fields{
