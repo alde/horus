@@ -3,18 +3,20 @@
 :warning: non-functional - early brain dump
 
 ## Purpose
-Horus takes a secret, a repository and a key, encrypt it and store it.
+Input for Horus is a secret, a repository and a key (or a name if you prefer).
+The secret is then encrypted using the encryption backend (currently Google Cloud KMS), and
+stored along with the repository and the name.
 
-When retrieved, the encrypted string will be returned, so whoever requests it
-must do the decryption.
+To retrieve a secret you pass the repository and the key (name), and Horus will return the entrypted string.
+The Horus backend doesn't know how to decrypt, that is left to the caller. Horus trusts that if you can decrypt it
+yourself, you deserve to see the content.
 
 The reason it takes a repository is that the intent is to store secrets needed for
 build-time in a CI system, and have that system know how to decrypt the secret as well.
 
-It does not implement its own encryption strategy. Initially it will only
-rely on Google Cloud KMS, but more options may be added.
+It does not implement its own encryption strategy.
 
-Submission of keys should always be done over TLS.
+Submission of secrets should always be done over TLS.
 
 ## Backend
 Backend is written in Go, and is very simple.
