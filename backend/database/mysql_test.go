@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"os"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	testcontainers "github.com/testcontainers/testcontainers-go"
@@ -24,14 +23,12 @@ func setupMySQLTestContainer() *config.Config {
 			"MYSQL_ROOT_PASSWORD": "horus_password",
 			"MYSQL_DATABASE":      "horus_testing",
 		},
-		WaitingFor: wait.ForListeningPort("33060/tcp"),
+		WaitingFor: wait.ForLog("port: 3306  MySQL Community Server - GPL"),
 	}
 	mysqlC, _ := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
 		Started:          true,
 	})
-
-	time.Sleep(30 * time.Second)
 
 	cfg := config.DefaultConfig()
 	cfg.MySQL.Host, _ = mysqlC.Host(ctx)
