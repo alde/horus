@@ -1,4 +1,4 @@
-# Horus
+# ![eye of horus](frontend/public/eye_of_horus_small.png) Horus
 
 :warning: non-functional - early brain dump
 

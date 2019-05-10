@@ -28,7 +28,7 @@ function App(props) {
             color="inherit"
             aria-label="Menu"
           >
-            {/* <MenuIcon /> */}
+            <img alt="horus logo" src="/eye_of_horus_small.png" />
           </IconButton>
           <Typography variant="h6" color="inherit">
             Horus
